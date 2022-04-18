@@ -35,6 +35,7 @@ class Oxford102Dataset(Dataset):
         img_name = self.dataset + "jpg/image_" + str(plant_number).zfill(5) + ".jpg"
         image = io.imread(img_name)
         plant_label = self.labels["labels"][idx]
+
         sample = {'image': image, 'plant_label': plant_label}
 
         if self.transform:
@@ -95,7 +96,7 @@ class RandomCrop(object):
         image = image[top: top + new_h,
                       left: left + new_w]
 
-        plant_label = plant_label - [left, top]
+        plant_label = plant_label
 
         return {'image': image, 'plant_label': plant_label}
 
