@@ -13,7 +13,7 @@ import numpy as np
 
 
 class Oxford102Dataset(Dataset):
-    def __init__(self, csv_file: str, dataset_dir = str, transform = None):
+    def __init__(self, csv_file: str, dataset_dir=str, transform=None):
         """
         Args:
         :param csv_file (string): Path to the csv file with the image labels
