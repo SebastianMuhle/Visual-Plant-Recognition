@@ -6,8 +6,9 @@
 # All rights reserved.
 
 import torch
-import pandas as pd
 from torch.utils.data import Dataset, DataLoader
+import torch.nn.functional as F
+import pandas as pd
 from skimage import io, transform
 import numpy as np
 
@@ -34,7 +35,7 @@ class Oxford102Dataset(Dataset):
         plant_number = idx + 1
         img_name = self.dataset + "jpg/image_" + str(plant_number).zfill(5) + ".jpg"
         image = io.imread(img_name)
-        plant_label = self.labels["labels"][idx]
+        plant_label = self.labels["labels"][idx] - 1
 
         sample = {'image': image, 'plant_label': plant_label}
 
@@ -112,6 +113,17 @@ class ToTensor(object):
         # torch image: C x H x W
         image = image.transpose((2, 0, 1))
         return {'image': torch.from_numpy(image),
-                'landmarks': torch.from_numpy(plant_label)}
+                'plant_label': plant_label}
 
+
+class Normalize(object):
+    """Convert image from byte to image from 0 to 1"""
+
+    def __call__(self, sample):
+        image, plant_label = sample['image'].float(), sample['plant_label']
+
+        image = F.normalize(image, dim=-1)
+
+        return {'image': image,
+                'plant_label': plant_label}
 
