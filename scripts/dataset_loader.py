@@ -33,7 +33,8 @@ class Oxford102Dataset(Dataset):
             idx = idx.tolist()
 
         plant_number = idx + 1
-        img_name = self.dataset + "jpg/image_" + str(plant_number).zfill(5) + ".jpg"
+        img_name = self.dataset + "jpg/image_" + \
+            str(plant_number).zfill(5) + ".jpg"
         image = io.imread(img_name)
         plant_label = self.labels["labels"][idx] - 1
 
@@ -44,10 +45,12 @@ class Oxford102Dataset(Dataset):
 
         return sample
 
+
 class Rescale(object):
     """
     Rescales the image in a sample to a given size
     """
+
     def __init__(self, output_size):
         assert isinstance(output_size, (int, tuple))
         self.output_size = output_size
@@ -68,6 +71,7 @@ class Rescale(object):
         img = transform.resize(image, (new_h, new_w))
 
         return {'image': img, 'plant_label': plant_label}
+
 
 class RandomCrop(object):
     """Crop randomly the image in a sample.
@@ -126,4 +130,3 @@ class Normalize(object):
 
         return {'image': image,
                 'plant_label': plant_label}
-
