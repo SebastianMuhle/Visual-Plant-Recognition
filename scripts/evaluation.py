@@ -20,11 +20,12 @@ def evaluation(model: nn.Module, dataloader: DataLoader, loss_function: nn.Cross
         if use_cuda:
             data, target = data.cuda(), target.cuda()
         output = model(images)
-        loss += loss_function(output, labels)
+        loss += loss_function(output, labels) * dataloader.batch_size
 
         output_max_scores, output_max_idx = output.max(dim=1)
 
         correct += (output_max_idx == labels).float().sum()
 
     accuracy = 100.0 * correct / (len(dataloader) * dataloader.batch_size)
+    loss /= (len(dataloader) * dataloader.batch_size)
     return loss, accuracy

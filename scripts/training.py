@@ -19,9 +19,6 @@ def train_epoch(model, dataloader, optimizer, loss_function, use_cuda, progress_
         loss.backward()
         optimizer.step()
 
-        progress_bar['batch'](batch_idx + 1)
+        progress_bar['batch'](batch_idx)
 
         progress_bar['progress'].update(step=1)
-
-    # # print training/validation statistics
-    # print('Epoch: {} \tTraining Loss: {:.6f}'.format(epoch, loss))
