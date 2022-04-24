@@ -7,6 +7,7 @@
 
 import torch.nn as nn
 import torch.nn.functional as F
+from torchvision import models
 
 
 # define the CNN architecture
@@ -43,3 +44,16 @@ class SimpleNet(nn.Module):
         x = self.fc2(x)
         return x
 
+def resNet_152(number_of_features: int):
+    model = models.resnet152(pretrained=True)
+    ct = 0
+    for child in model.children():
+        print(" child", ct, "is -")
+        print(child)
+        ct +=1
+        if ct < 10:
+            for param in child.parameters():
+                param.requires_grad = False
+    model.fc = nn.Linear(number_of_features, 102)
+
+    return model
