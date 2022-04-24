@@ -48,6 +48,8 @@ def resNet_152(number_of_features: int):
     model = models.resnet152(pretrained=True)
     ct = 0
     for child in model.children():
+        print(" child", ct, "is -")
+        print(child)
         ct +=1
         if ct < 10:
             for param in child.parameters():
