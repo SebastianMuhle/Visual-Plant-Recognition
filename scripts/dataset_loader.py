@@ -24,8 +24,10 @@ class Oxford102Dataset(Dataset):
         self.labels = pd.read_csv(csv_file)
         self.dataset = dataset_dir
         self.transform = transform
+        print(len(self.labels))
 
     def __len__(self):
+        return 768
         return len(self.labels)
 
     def __getitem__(self, idx):
@@ -33,12 +35,11 @@ class Oxford102Dataset(Dataset):
             idx = idx.tolist()
 
         plant_number = idx + 1
-        img_name = self.dataset + "jpg/image_" + \
-            str(plant_number).zfill(5) + ".jpg"
+        img_name = self.dataset + "jpg/image_" + str(plant_number).zfill(5) + ".jpg"
         image = io.imread(img_name)
         plant_label = self.labels["labels"][idx] - 1
 
-        sample = {'image': image, 'plant_label': plant_label}
+        sample = {"image": image, "plant_label": plant_label}
 
         if self.transform:
             sample = self.transform(sample)
@@ -70,7 +71,7 @@ class Rescale(object):
         new_h, new_w = int(new_h), int(new_w)
         img = transform.resize(image, (new_h, new_w))
 
-        return {'image': img, 'plant_label': plant_label}
+        return {"image": img, "plant_label": plant_label}
 
 
 class RandomCrop(object):
@@ -90,7 +91,7 @@ class RandomCrop(object):
             self.output_size = output_size
 
     def __call__(self, sample):
-        image, plant_label = sample['image'], sample['plant_label']
+        image, plant_label = sample["image"], sample["plant_label"]
 
         h, w = image.shape[:2]
         new_h, new_w = self.output_size
@@ -98,35 +99,32 @@ class RandomCrop(object):
         top = np.random.randint(0, h - new_h)
         left = np.random.randint(0, w - new_w)
 
-        image = image[top: top + new_h,
-                      left: left + new_w]
+        image = image[top : top + new_h, left : left + new_w]
 
         plant_label = plant_label
 
-        return {'image': image, 'plant_label': plant_label}
+        return {"image": image, "plant_label": plant_label}
 
 
 class ToTensor(object):
     """Convert ndarrays in sample to Tensors."""
 
     def __call__(self, sample):
-        image, plant_label = sample['image'], sample['plant_label']
+        image, plant_label = sample["image"], sample["plant_label"]
 
         # swap color axis because
         # numpy image: H x W x C
         # torch image: C x H x W
         image = image.transpose((2, 0, 1))
-        return {'image': torch.from_numpy(image),
-                'plant_label': plant_label}
+        return {"image": torch.from_numpy(image), "plant_label": plant_label}
 
 
 class Normalize(object):
     """Convert image from byte to image from 0 to 1"""
 
     def __call__(self, sample):
-        image, plant_label = sample['image'].float(), sample['plant_label']
+        image, plant_label = sample["image"].float(), sample["plant_label"]
 
         image = F.normalize(image, dim=-1)
 
-        return {'image': image,
-                'plant_label': plant_label}
+        return {"image": image, "plant_label": plant_label}
