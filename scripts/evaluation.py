@@ -31,7 +31,7 @@ def evaluation(
         if use_cuda:
             data, target = data.cuda(), target.cuda()
         output = model(images)
-        loss += loss_function(output, labels) * dataloader.batch_size
+        loss += loss_function(output, labels).detach().item() * dataloader.batch_size
 
         output_max_scores, output_max_idx = output.max(dim=1)
 
