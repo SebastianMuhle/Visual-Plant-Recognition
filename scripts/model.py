@@ -44,12 +44,12 @@ class SimpleNet(nn.Module):
         x = self.fc2(x)
         return x
 
-def resNet_152(number_of_features: int):
+def resNet_152(number_of_features: int, child_layers_to_freeze: int):
     model = models.resnet152(pretrained=True)
     for ct, child in enumerate(model.children()):
         print(" child", ct, "is -")
         print(child)
-        if ct < 10:
+        if ct <= child_layers_to_freeze:
             for param in child.parameters():
                 param.requires_grad = False
     model.fc = nn.Linear(number_of_features, 102)
