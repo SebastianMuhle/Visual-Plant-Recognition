@@ -9,6 +9,9 @@
 def train_epoch(model, dataloader, optimizer, loss_function, use_cuda):
     model.train()
     for batch_idx, data in enumerate(dataloader):
+        print(batch_idx)
+        if batch_idx > 5:
+            break
         images = data["image"]
         labels = data["plant_label"]
         # move to GPU

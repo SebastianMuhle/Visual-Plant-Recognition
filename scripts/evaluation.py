@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader
 
 
 def evaluation(model: nn.Module, dataloader: DataLoader, loss_function: nn.CrossEntropyLoss, use_cuda: bool) -> tuple[float, float]:
+    model.eval()
     loss = 0
     correct = 0
     for batch_idx, data in enumerate(dataloader):
