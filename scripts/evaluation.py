@@ -12,6 +12,8 @@ import torch
 import numpy as np
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
 
 
 def evaluation(
@@ -42,7 +44,7 @@ def evaluation(
     return loss, accuracy, conf_matrix
 
 
-def per_class_accuracy(conf_matrix: np.ndarray):
+def per_class_accuracy(conf_matrix: np.ndarray) -> Figure:
     # TODO: remove +1 when evaluating the real dataset
     num_correct = np.diag(conf_matrix) + 1
     num_total = np.sum(conf_matrix, axis=1) + 1
@@ -51,10 +53,11 @@ def per_class_accuracy(conf_matrix: np.ndarray):
 
     fig, ax = plt.subplots(1, 1)
     ax.hist(accuracy, 20, (0.0, 1.0), density=True)
-    plt.show()
+    # plt.show()
+    return fig
 
 
-def worst_classes(conf_matrix: np.ndarray, k: int):
+def worst_classes(conf_matrix: np.ndarray, k: int) -> Figure:
     # TODO: remove +1 when evaluating the real dataset
     num_correct = np.diag(conf_matrix) + 1
     num_total = np.sum(conf_matrix, axis=1) + 1
@@ -67,4 +70,5 @@ def worst_classes(conf_matrix: np.ndarray, k: int):
     fig, axs = plt.subplots(k, 1)
     for predictions, ax in zip(worst_k, axs):
         ax.bar(np.arange(predictions.size) + 1, predictions, align="center")
-    plt.show()
+    # plt.show()
+    return fig
