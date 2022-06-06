@@ -25,6 +25,9 @@ class SimpleNet(nn.Module):
         self.fc1 = nn.Linear(128 * 28 * 28, 500)
         self.fc2 = nn.Linear(500, 102)
 
+        # softmax
+        self.sm = nn.Softmax(dim=1)
+
         # Dropout
         self.dropout = nn.Dropout(0.2)
 
@@ -42,7 +45,8 @@ class SimpleNet(nn.Module):
         x = self.dropout(x)
         # 2nd hidden layer
         x = self.fc2(x)
-        return x
+        return self.sm(x)
+
 
 def resNet_152(number_of_features: int, child_layers_to_freeze: int):
     model = models.resnet152(pretrained=True)
