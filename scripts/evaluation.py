@@ -7,10 +7,11 @@
 
 from typing import Tuple
 import torch.nn as nn
+import torch
 from torch.utils.data import DataLoader
 
 
-def evaluation(model: nn.Module, dataloader: DataLoader, loss_function: nn.CrossEntropyLoss, use_cuda: bool) -> tuple[float, float]:
+def evaluation(model: nn.Module, dataloader: DataLoader, loss_function: nn.CrossEntropyLoss, use_cuda: bool, use_mps: bool) -> Tuple[float, float]:
     model.eval()
     loss = 0
     correct = 0
@@ -18,8 +19,13 @@ def evaluation(model: nn.Module, dataloader: DataLoader, loss_function: nn.Cross
         images = data['image']
         labels = data['plant_label']
         # move to GPU
-        if use_cuda:
-            data, target = data.cuda(), target.cuda()
+        #if use_cuda:
+           # data, target = data.cuda(), target.cuda()
+        if use_mps:
+            device = torch.device('mps')
+            if device:
+                images.to(device)
+                labels.to(device)
         output = model(images)
         loss += loss_function(output, labels).detach().item() * dataloader.batch_size
 
