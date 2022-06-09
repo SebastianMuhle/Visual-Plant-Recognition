@@ -57,3 +57,11 @@ def batch_visualization(dataset, size: tuple = (3, 2), fig_size: tuple = (10, 5)
         ax.imshow(sample['image'])
         title = f"Ground Truth: {sample['plant_label']}, {_NAMES[sample['plant_label']]}"
         ax.set_title(title)
+
+def class_balance_visualization(class_sample_counts: dict):
+    plt.figure(figsize=(22, 5))    
+    plt.bar(range(len(class_sample_counts)), list(class_sample_counts.values()), align='center')
+    plt.xticks(range(len(class_sample_counts)), list(class_sample_counts.keys()))
+    plt.xticks(rotation=80)
+    plt.title('Samples per Class')
+    plt.show()
