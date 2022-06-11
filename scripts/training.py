@@ -22,6 +22,7 @@ def train_epoch(model, dataloader, optimizer, loss_function, use_cuda, use_mps):
                 labels.to(device)
         optimizer.zero_grad()
         output = model(images)
+        # TODO: set reduction to "mean"
         loss = loss_function(output, labels)
         loss.backward()
         optimizer.step()
