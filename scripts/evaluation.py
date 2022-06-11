@@ -6,6 +6,7 @@
 # All rights reserved.
 
 import torch.nn as nn
+import torch
 from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import confusion_matrix
@@ -23,8 +24,13 @@ def evaluation(
         images = data["image"]
         labels = data["plant_label"]
         # move to GPU
-        if use_cuda:
-            data, target = data.cuda(), target.cuda()
+        # if use_cuda:
+        # data, target = data.cuda(), target.cuda()
+        if use_mps:
+            device = torch.device("mps")
+            if device:
+                images.to(device)
+                labels.to(device)
         output = model(images)
         loss += loss_function(output, labels).detach().item() * dataloader.batch_size
 

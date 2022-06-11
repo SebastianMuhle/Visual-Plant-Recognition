@@ -187,3 +187,12 @@ def worst_classes(conf_matrix: np.ndarray, k: int) -> Figure:
     axs[-1].set_xlabel(f"labels")
     # plt.show()
     return fig
+
+
+def class_balance_visualization(class_sample_counts: dict):
+    plt.figure(figsize=(22, 5))
+    plt.bar(range(len(class_sample_counts)), list(class_sample_counts.values()), align="center")
+    plt.xticks(range(len(class_sample_counts)), list(class_sample_counts.keys()))
+    plt.xticks(rotation=80)
+    plt.title("Samples per Class")
+    plt.show()
