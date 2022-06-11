@@ -13,7 +13,7 @@ from sklearn.metrics import confusion_matrix
 
 
 def evaluation(
-    model: nn.Module, dataloader: DataLoader, loss_function: nn.CrossEntropyLoss, use_cuda: bool
+    model: nn.Module, dataloader: DataLoader, loss_function: nn.CrossEntropyLoss, use_cuda: bool, use_mps: bool
 ) -> tuple[float, float, np.ndarray]:
     with torch.no_grad():
         loss = 0
@@ -39,7 +39,6 @@ def evaluation(
             output_max_scores, output_max_idx = output.max(dim=1)
 
             conf_matrix += confusion_matrix(labels, output_max_idx, labels=np.arange(num_classes))
-
             correct += (output_max_idx == labels).float().sum()
 
         accuracy = 100.0 * correct / (len(dataloader) * dataloader.batch_size)
