@@ -27,7 +27,6 @@ class Oxford102Dataset(Dataset):
         print(len(self.labels))
 
     def __len__(self):
-        return 768
         return len(self.labels)
 
     def __getitem__(self, idx):
