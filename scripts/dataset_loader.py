@@ -130,3 +130,11 @@ class Normalize(object):
 
         return {'image': image,
                 'plant_label': plant_label}
+
+def per_image_weights(dataset: Oxford102Dataset, class_sample_counts: dict):
+    class_counts = torch.tensor(list(class_sample_counts.values()))
+    total_count = class_counts.sum()
+    weights = total_count / class_counts
+    image_labels = (dataset.labels["labels"]-1).to_list()
+    per_image_weights = weights[image_labels]
+    return per_image_weights

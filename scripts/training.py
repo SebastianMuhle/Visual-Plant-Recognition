@@ -5,6 +5,7 @@
 # Copyright (c) 2022, Sebastian Muhle, Dominik Muhle.
 # All rights reserved.
 import torch
+ 
 
 def train_epoch(model, dataloader, optimizer, loss_function, use_cuda, use_mps):
     model.train()
